@@ -1,0 +1,26 @@
+{
+  "name": "htmb",
+  "version": "1.0.0",
+  "description": "HTMB is a lightweight library for building HTML structures using functions. It provides a simple and intuitive way to create HTML elements programmatically across different programming languages.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oklar/htmb.git"
+  },
+  "keywords": [
+    "html",
+    "builder",
+    "template",
+    "hypertext",
+    "markup"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oklar/htmb/issues"
+  },
+  "homepage": "https://github.com/oklar/htmb#readme"
+}
