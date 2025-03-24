@@ -1,74 +1,36 @@
-# HTMB (Hypertext Markdown Builder)
+# HTMB - Hypertext Markup Builder
 
-HTMB is a lightweight library for building HTML structures using functions. It provides a simple and intuitive way to create HTML elements programmatically across different programming languages.
+A minimalistic library for building HTML structures using pure functions. HTMB provides a clean, simple API for generating HTML.
 
-## Overview
+## Implementations
 
-HTMB allows you to create HTML elements using function calls instead of writing raw HTML strings. Each function represents an HTML element and can accept various parameters to define attributes, content, and nested elements.
+HTMB is available in multiple languages:
 
-## Implementation
+- [C#](cs/README.md)
+- [JavaScript](js/README.md)
+- ...
 
-Each language folder contains its own implementation of the HTMB concept.
+## Core Concept
 
-### JavaScript Implementation
+HTMB uses a functional approach to HTML generation, representing elements as function calls:
 
-The JavaScript implementation provides functions that generate HTML strings. Each HTML element is represented by a function that can be called in multiple ways:
-
-```javascript
-// Basic element with no content
-div(); // -> "<div></div>"
-
-// Element with inner text
-div("hello world!"); // -> "<div>hello world!</div>"
-
-// Element with attributes
-div({ class: "text-green-500" }); // -> "<div class="text-green-500"></div>"
-
-// Element with attributes and content
-div({ class: "text-green-500" }, "hello world!"); // -> "<div class="text-green-500">hello world!</div>"
-
-// Element with nested elements
-div(span(), h1()); // -> "<div><span></span><h1></h1></div>"
-
-// Element with attributes, text, and nested elements
-div({ class: "text-green-500" }, "hello world!", span(), h1());
-// -> "<div class="text-green-500">hello world!<span></span><h1></h1></div>"
+```
+// Pseudocode example
+div(
+  h1("Hello World"),
+  p("Welcome to HTMB")
+)
 ```
 
-### Special Cases
+This produces HTML like:
 
-- Self-closing tags (like `img`, `br`, `input`) cannot contain child elements
-- All HTML elements are supported through corresponding functions
-- Multiple children can be passed as separate arguments
-
-## Testing
-
-Each implementation includes a test suite to verify:
-
-- Basic element creation
-- Attribute handling
-- Nested elements
-- Self-closing tags
-- Mixed content (text and elements)
-- Edge cases
-
-## Future Enhancements
-
-- Custom component support
-- Additional language implementations
-- Template support
-- Style utilities
-
-## Contributing
-
-Feel free to contribute by:
-
-1. Adding new language implementations
-2. Improving existing implementations
-3. Adding new features
-4. Writing documentation
-5. Creating examples
+```html
+<div>
+  <h1>Hello World</h1>
+  <p>Welcome to HTMB</p>
+</div>
+```
 
 ## License
 
-...
+MIT

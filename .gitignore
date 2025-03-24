@@ -36,3 +36,8 @@ coverage/
 *.tmp
 *.temp
 .cache/ 
+
+cs/bin/*
+cs/obj/*
+
+cs/.vs/*
