@@ -32,7 +32,7 @@ public class HtmlTests
     [Fact]
     public void Div_ShouldReturnDivWithBooleanAttribute_WhenValueIsNull()
     {
-        var result = Div(("required", default));
+        var result = Div(("required", "true"));
         Assert.Equal("<div required></div>", result);
     }
 
@@ -86,5 +86,83 @@ public class HtmlTests
             ("class", "my-class")
         ], "Hello World", Div("Hello World"), "Hello World");
         Assert.Equal("<div class=\"my-class\">Hello World<div>Hello World</div>Hello World</div>", result);
+    }
+
+
+    [Fact]
+    public void Input_ShouldReturnEmptyInput_WhenNoArgumentsProvided()
+    {
+        var result = Input();
+        Assert.Equal("<input>", result);
+    }
+
+    [Fact]
+    public void Input_ShouldReturnInputWithSingleAttribute_WhenSingleAttributeProvided()
+    {
+        var result = Input(("type", "text"));
+        Assert.Equal("<input type=\"text\">", result);
+    }
+
+    [Fact]
+    public void Input_ShouldReturnInputWithMultipleAttributes_WhenMultipleAttributesProvided()
+    {
+        var result = Input(
+        [
+            ("type", "text"),
+            ("name", "username"),
+            ("placeholder", "Enter your username")
+        ]);
+        Assert.Equal("<input type=\"text\" name=\"username\" placeholder=\"Enter your username\">", result);
+    }
+
+    [Fact]
+    public void Input_ShouldReturnInputWithMixedAttributes_WhenAttributesProvided()
+    {
+        var result = Input(
+        [
+            ("type", "checkbox"),
+            ("checked", null),
+            ("name", "subscribe")
+        ]);
+        Assert.Equal("<input type=\"checkbox\" checked name=\"subscribe\">", result);
+    }
+
+
+    [Fact]
+    public void Input_ShouldReturnInputWithBooleanAttribute_WhenBooleanValueIsTrue()
+    {
+        var result = Input(("required", true));
+        Assert.Equal("<input required>", result);
+    }
+
+    [Fact]
+    public void Input_ShouldReturnInputWithBooleanAttribute_WhenBooleanValueIsFalse()
+    {
+        var result = Input(("required", false));
+        Assert.Equal("<input>", result);
+    }
+
+    [Fact]
+    public void Input_ShouldReturnInputWithMixedAttributesIncludingBoolean_WhenAttributesProvided()
+    {
+        var result = Input(
+        [
+            ("type", true),
+            ("checked", true),
+            ("name", false)
+        ]);
+        Assert.Equal("<input type checked>", result);
+    }
+
+    [Fact]
+    public void Input_ShouldReturnInputWithInterpretedBoolean_WhenAttributesProvided()
+    {
+        var result = Input(
+        [
+            ("type", "true"),
+            ("checked", "false"),
+            ("name", null)
+        ]);
+        Assert.Equal("<input type name>", result);
     }
 }
