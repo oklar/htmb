@@ -4,6 +4,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>htmb</PackageId>
+    <Title>HTMB - Hypertext Markup Builder</Title>
+    <RepositoryUrl>https://github.com/oklar/htmb</RepositoryUrl>
+    <PackageTags>HTMB Hypertext Markup Builder HTML</PackageTags>
+    <PackageProjectUrl>https://github.com/oklar/htmb</PackageProjectUrl>
   </PropertyGroup>
 
 </Project>
