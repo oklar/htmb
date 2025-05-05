@@ -1,3 +1,5 @@
+
+
 # Dependencies
 node_modules/
 package-lock.json
@@ -37,7 +39,10 @@ coverage/
 *.temp
 .cache/ 
 
-cs/bin/*
-cs/obj/*
+cs/*/bin/*
+cs/*/obj/*
 
-cs/.vs/*
+cs/*/obj/*
+cs/*/bin/*
+
+cs/*/.vs/*

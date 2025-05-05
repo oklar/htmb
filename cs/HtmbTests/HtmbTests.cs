@@ -1,9 +1,8 @@
-using Xunit;
-using static HTMB.Htmb;
+using static HtmbLibrary.Htmb;
 
-namespace HTMB.Tests;
+namespace HtmbTests;
 
-public class HtmlTests
+public class HtmbTests
 {
     [Fact]
     public void Div_ShouldReturnEmptyDiv_WhenNoArgumentsProvided()
