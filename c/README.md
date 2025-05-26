@@ -38,3 +38,28 @@ int main(void)
   free(test);
 }
 ```
+
+```html
+<body>
+  <header>
+    <h1>Welcome to my page</h1>
+    <p>This is a simple demo using standard and void HTML tags.</p>
+    <hr />
+  </header>
+  <main>
+    <section>
+      <h2>Form Elements</h2>
+      <form>
+        <label form="name">Name:</label
+        ><input type="text" id="name" name="name" /><br /><br /><label
+          form="email"
+          >Email:</label
+        ><input type="email" id="email" name="email" /><br /><br /><input
+          type="submit"
+          value="Submit"
+        />
+      </form>
+    </section>
+  </main>
+</body>
+```
