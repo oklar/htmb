@@ -46,3 +46,41 @@ cs/*/obj/*
 cs/*/bin/*
 
 cs/*/.vs/*
+
+*.exe
+
+# Compiled object files
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled static libraries
+*.lib
+*.a
+
+# Compiled dynamic libraries
+*.dll
+*.so
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# VSCode settings
+.vscode/
+
+# Temporary files
+*~
+*.log
+*.tmp
