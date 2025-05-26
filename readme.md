@@ -6,9 +6,9 @@ A minimalistic library for building HTML structures using pure functions. HTMB p
 
 HTMB is available in multiple languages:
 
-- [C](c/README.md)
-- [C#](cs/HtmbLibrary/README.md)
-- [JavaScript](js/README.md)
+- [C](c/)
+- [C#](cs/HtmbLibrary/)
+- [JavaScript](js/)
 - ...
 
 ## Core Concept
