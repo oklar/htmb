@@ -1,6 +1,7 @@
 # HTMB - Hypertext Markup Builder
 
-A minimalistic library for building HTML structures using pure functions. HTMB provides a clean, simple API for generating HTML.
+A minimalistic library for building HTML structures using pure functions. HTMB provides a clean, simple API for generating HTML for as many programming languages as possible.
+
 
 ## Implementations
 
@@ -9,7 +10,7 @@ HTMB is available in multiple languages:
 - [C](c/)
 - [C#](cs/HtmbLibrary/)
 - [JavaScript](js/)
-- ...
+- [...?](https://github.com/oklar/htmb/pulls)
 
 ## Core Concept
 
