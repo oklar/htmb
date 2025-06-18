@@ -1,0 +1,26 @@
+{
+    "name": "HTMB",
+    "version": "1.0.0",
+    "description": "A minimalistic C library for building HTML structures using pure functions.",
+    "keywords": "html, htmlbuilder, builder, c, library",
+    "repository":
+    {
+      "type": "git",
+      "url": "https://github.com/oklar/htmb"
+    },
+    "authors":
+    [
+      {
+        "name": "Olav Kjartan Larseng",
+        "email": "olavlarseng@proton.me",
+        "url": "https://github.com/oklar",
+        "maintainer": true
+      }
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/oklar/htmb",
+    "dependencies": {
+    },
+    "frameworks": "*",
+    "platforms": "*"
+  }
