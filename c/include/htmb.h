@@ -44,7 +44,7 @@ make_tag(const char *tag,
         if (i+1 < attr_count) alen += 1;  /* space */
     }
 
-    char *abuf = malloc(alen + 1);
+    char *abuf = (char *)malloc(alen + 1);
     abuf[0] = '\0';
     for (size_t i = 0; i < attr_count; i++) {
         const char *s = attrs[i];
@@ -74,10 +74,10 @@ make_tag(const char *tag,
     size_t tlen = strlen(tag);
     char *open;
     if (alen > 0) {
-        open = malloc(2 + tlen + 1 + alen + 1);
+        open = (char *)malloc(2 + tlen + 1 + alen + 1);
         sprintf(open, "<%s %s>", tag, abuf);
     } else {
-        open = malloc(2 + tlen + 1);
+        open = (char *)malloc(2 + tlen + 1);
         sprintf(open, "<%s>", tag);
     }
     free(abuf);
@@ -85,15 +85,15 @@ make_tag(const char *tag,
     size_t clen = 0;
     for (size_t i = 0; i < kid_count; i++)
         if (kids[i]) clen += strlen(kids[i]);
-    char *content = malloc(clen + 1);
+    char *content = (char *)malloc(clen + 1);
     content[0] = '\0';
     for (size_t i = 0; i < kid_count; i++)
         if (kids[i]) strcat(content, kids[i]);
 
-    char *close = malloc(3 + tlen + 1);
+    char *close = (char *)malloc(3 + tlen + 1);
     sprintf(close, "</%s>", tag);
 
-    char *out = malloc(strlen(open) + strlen(content) + strlen(close) + 1);
+    char *out = (char *)malloc(strlen(open) + strlen(content) + strlen(close) + 1);
     strcpy(out, open);
     strcat(out, content);
     strcat(out, close);
@@ -125,7 +125,7 @@ make_void_tag(const char *tag,
         if (i + 1 < attr_count) alen += 1;  /* space */
     }
 
-    char *abuf = malloc(alen + 1);
+    char *abuf = (char *)malloc(alen + 1);
     abuf[0] = '\0';
     for (size_t i = 0; i < attr_count; i++) {
         const char *s = attrs[i];
@@ -150,7 +150,7 @@ make_void_tag(const char *tag,
     size_t tlen = strlen(tag);
     /* estimate: '<' + tag + (space+attrs?) + '/>' + NUL */
     size_t len = 1 + tlen + (alen ? 1 + alen : 0) + 2 + 1;
-    char *out = malloc(len);
+    char *out = (char *)malloc(len);
 
     if (alen) {
         /* e.g. <img src="x" alt="y"/> */
