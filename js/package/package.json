@@ -1,6 +1,6 @@
 {
   "name": "htmb",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "HTMB is a lightweight library for building HTML structures using functions",
   "main": "index.js",
   "module": "index.js",
