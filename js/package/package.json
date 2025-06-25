@@ -19,7 +19,7 @@
     "index.js"
   ],
   "scripts": {
-    "test": "npm run test"
+    "test": "node index.test.js"
   },
   "repository": {
     "type": "git",
@@ -32,7 +32,7 @@
     "hypertext",
     "markup"
   ],
-  "author": "",
+  "author": "Olav Kjartan Larseng",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/oklar/htmb/issues"
