@@ -1,10 +1,24 @@
 {
   "name": "htmb",
   "version": "1.0.0",
-  "description": "HTMB is a lightweight library for building HTML structures using functions. It provides a simple and intuitive way to create HTML elements programmatically across different programming languages.",
+  "description": "HTMB is a lightweight library for building HTML structures using functions",
   "main": "index.js",
+  "module": "index.js",
+  "browser": "htmb.umd.js",
+  "unpkg": "htmb.umd.js",
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "import": "./index.mjs"
+    }
+  },
+  "files": [
+    "index.mjs",
+    "htmb.umd.js",
+    "index.js"
+  ],
   "scripts": {
-    "test": "node index.test.js"
+    "test": "npm run test"
   },
   "repository": {
     "type": "git",
@@ -18,7 +32,7 @@
     "markup"
   ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/oklar/htmb/issues"
   },

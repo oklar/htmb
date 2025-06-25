@@ -1,5 +1,5 @@
 const assert = require("assert");
-const htmb = require("./index");
+const htmb = require("./index.cjs.js");
 
 const { div, span, h1, p, img, br, input, a, style } = htmb;
 

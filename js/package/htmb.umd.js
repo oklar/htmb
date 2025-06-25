@@ -1,8 +1,15 @@
-/**
- * HTMB - Hypertext Markdown Builder
- * A lightweight library for building HTML structures using functions
- */
-(function (global) {
+(function (root, factory) {
+  if (typeof define === "function" && define.amd) {
+    // AMD
+    define([], factory);
+  } else if (typeof exports === "object") {
+    // CommonJS
+    module.exports = factory();
+  } else {
+    // Browser global
+    root.htmb = factory();
+  }
+})(typeof self !== "undefined" ? self : this, function () {
   const tagsVoid = [
     "area",
     "base",
@@ -178,11 +185,9 @@
     htmb[tag] = createElementFunction(tag);
   });
 
-  if (isBrowser) {
-    global.__htmb = htmb;
-  }
+  tagsVoid.forEach((tag) => {
+    htmb[tag] = createElementFunction(tag);
+  });
 
-  if (typeof module !== "undefined" && module.exports) {
-    module.exports = htmb;
-  }
-})(typeof window !== "undefined" ? window : global);
+  return htmb;
+});
