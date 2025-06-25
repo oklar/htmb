@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTMB Examples</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .container {
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 8px;
+      }
+      .output {
+        border-left: 3px solid #ddd;
+        padding: 10px;
+        margin: 10px 0;
+      }
+      .code {
+        background: #f5f5f5;
+        padding: 15px;
+        border-radius: 4px;
+        margin: 10px 0;
+        font-family: monospace;
+        white-space: pre;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>HTMB Examples</h1>
+
+    <div class="example">
+      <h2>Basic Elements</h2>
+      <div class="code" id="basic-code">
+        div({ class: "container" }, h1("Hello World"), p("Welcome to HTMB") )
+      </div>
+      <div class="output" id="basic-output"></div>
+    </div>
+
+    <script src="src/htmb.umd.js"></script>
+    <script>
+      const { div, h1, h2, h3, p, span, button, style } = __htmb;
+
+      // Basic example
+      const basic = div(
+        { class: "container" },
+        h1("Hello World"),
+        p("Welcome to HTMB")
+      );
+      document.getElementById("basic-output").innerHTML = basic;
+    </script>
+  </body>
+</html>

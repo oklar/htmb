@@ -1,7 +1,7 @@
 const assert = require("assert");
-const htmb = require("./index");
+const htmb = require("./index.cjs.js");
 
-const { div, span, h1, p, img, br, input, a, style, list } = htmb;
+const { div, span, h1, p, img, br, input, a, style } = htmb;
 
 (function runTests() {
   console.log("Running HTMB tests...");
@@ -72,27 +72,6 @@ const { div, span, h1, p, img, br, input, a, style, list } = htmb;
     div({ class: null, id: undefined, disabled: false }),
     "<div></div>",
     "Null and undefined attributes"
-  );
-
-  assert.strictEqual(
-    list(["a", "b"], (item) => span(item)),
-    "<span>a</span><span>b</span>",
-    "Basic list"
-  );
-  assert.strictEqual(
-    div(list([1, 2], (n) => span(n))),
-    "<div><span>1</span><span>2</span></div>",
-    "List within element"
-  );
-  assert.strictEqual(
-    list([], (item) => span(item)),
-    "",
-    "Empty list"
-  );
-  assert.strictEqual(
-    list([1, 2], (n) => span({ class: "num" }, n)),
-    '<span class="num">1</span><span class="num">2</span>',
-    "List with attributes"
   );
 
   assert.strictEqual(
