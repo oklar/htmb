@@ -6,6 +6,7 @@
   "module": "index.js",
   "browser": "htmb.umd.js",
   "unpkg": "htmb.umd.js",
+  "jsdelivr": "htmb.umd.js",
   "exports": {
     ".": {
       "require": "./index.js",
