@@ -57,8 +57,6 @@ div({ class: "card" }, h2("Title"), p("Content"));
 // -> '<div class="card"><h2>Title</h2><p>Content</p></div>'
 ```
 
-````
-
 ## API
 
 ### Element Functions
@@ -81,4 +79,3 @@ npm test
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-````
