@@ -17,25 +17,6 @@
         margin-top: 20px;
         border-radius: 8px;
       }
-      .example {
-        border-top: 1px solid #eee;
-        padding: 20px 0;
-      }
-      .title {
-        color: #333;
-      }
-      .btn {
-        background-color: #4caf50;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-right: 10px;
-      }
-      .btn:hover {
-        background-color: #45a049;
-      }
       .output {
         border-left: 3px solid #ddd;
         padding: 10px;
@@ -48,16 +29,6 @@
         margin: 10px 0;
         font-family: monospace;
         white-space: pre;
-      }
-      .fruit-item {
-        padding: 5px;
-        margin: 5px 0;
-        background-color: #f9f9f9;
-        border-radius: 4px;
-      }
-      .nav-item {
-        display: inline-block;
-        margin-right: 15px;
       }
     </style>
   </head>
@@ -72,38 +43,9 @@
       <div class="output" id="basic-output"></div>
     </div>
 
-    <div class="example">
-      <h2>Nested Elements</h2>
-      <div class="code" id="nested-code">
-        div({ class: "card" }, h2({ class: "title" }, "Card Title"), div({
-        class: "content" }, p("Some text here"), p("More text here") ), button({
-        disabled: true }, "Disabled Button") )
-      </div>
-      <div class="output" id="nested-output"></div>
-    </div>
-
-    <div class="example">
-      <h2>List Helper</h2>
-      <div class="code" id="list-code">
-        const items = ["Apple", "Banana", "Cherry"]; div( h3("Shopping List"),
-        list(items, item => div({ class: "item" }, span({ style: "color: #666"
-        }, "• "), item ) ) )
-      </div>
-      <div class="output" id="list-output"></div>
-    </div>
-
-    <div class="example">
-      <h2>Style Helper</h2>
-      <div class="code" id="style-code">
-        div( style(".custom { color: blue; }"), p({ class: "custom" }, "Blue
-        text") )
-      </div>
-      <div class="output" id="style-output"></div>
-    </div>
-
     <script src="index.js"></script>
     <script>
-      const { div, h1, h2, h3, p, span, button, style, list } = __htmb;
+      const { div, h1, h2, h3, p, span, button, style } = __htmb;
 
       // Basic example
       const basic = div(
@@ -112,32 +54,6 @@
         p("Welcome to HTMB")
       );
       document.getElementById("basic-output").innerHTML = basic;
-
-      // Nested example
-      const nested = div(
-        { class: "card" },
-        h2({ class: "title" }, "Card Title"),
-        div({ class: "content" }, p("Some text here"), p("More text here")),
-        button({ disabled: true }, "Disabled Button")
-      );
-      document.getElementById("nested-output").innerHTML = nested;
-
-      // List example
-      const items = ["Apple", "Banana", "Cherry"];
-      const listDemo = div(
-        h3("Shopping List"),
-        list(items, (item) =>
-          div({ class: "item" }, span({ style: "color: #666" }, "• "), item)
-        )
-      );
-      document.getElementById("list-output").innerHTML = listDemo;
-
-      // Style example
-      const styleDemo = div(
-        style(".custom { color: blue; }"),
-        p({ class: "custom" }, "Blue text")
-      );
-      document.getElementById("style-output").innerHTML = styleDemo;
     </script>
   </body>
 </html>
