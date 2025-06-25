@@ -57,31 +57,7 @@ div({ class: "card" }, h2("Title"), p("Content"));
 // -> '<div class="card"><h2>Title</h2><p>Content</p></div>'
 ```
 
-### List Helper
-
-```javascript
-const items = ["Apple", "Banana", "Cherry"];
-
-// Simple list rendering
-list(items, (item) => span(item));
-// -> '<span>Apple</span><span>Banana</span><span>Cherry</span>'
-
-// With attributes
-list(items, (item) =>
-  div({ class: "item" }, span({ style: "color: #666" }, "• "), item)
-);
-```
-
-### Style Helper
-
-```javascript
-// Add CSS directly
-style("body { margin: 0; }");
-// -> '<style>body { margin: 0; }</style>'
-
-// Use with other elements
-div(style(".custom { color: blue; }"), p({ class: "custom" }, "Blue text"));
-```
+````
 
 ## API
 
@@ -91,19 +67,6 @@ All HTML elements are available as functions that accept:
 
 - Optional first argument: attributes object
 - Remaining arguments: child content
-
-### Helper Functions
-
-#### list(items, renderer)
-
-- `items`: Array of items to render
-- `renderer`: Function that renders each item
-- Returns: String of concatenated rendered items
-
-#### style(content)
-
-- `content`: CSS content string
-- Returns: Style element with the CSS content
 
 ## Browser Support
 
@@ -118,3 +81,4 @@ npm test
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+````
