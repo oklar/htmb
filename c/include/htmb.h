@@ -359,6 +359,10 @@ make_void_tag(const char *tag,
 #define H5Attr(ATTRS_LIST, ...) ({ attr_list_t al = ATTRS ATTRS_LIST; const char *kids[] = { __VA_ARGS__ }; make_tag("h5", al.a, al.n, kids, PP_NARG(__VA_ARGS__)); })
 #define H6(...) ({ const char *kids[] = { __VA_ARGS__ }; make_tag("h6", NULL, 0, kids, PP_NARG(__VA_ARGS__)); })
 #define H6Attr(ATTRS_LIST, ...) ({ attr_list_t al = ATTRS ATTRS_LIST; const char *kids[] = { __VA_ARGS__ }; make_tag("h6", al.a, al.n, kids, PP_NARG(__VA_ARGS__)); })
+#define Iframe(...) ({ const char *kids[] = { __VA_ARGS__ }; make_tag("iframe", NULL, 0, kids, PP_NARG(__VA_ARGS__)); })
+#define IframeAttr(ATTRS_LIST, ...) ({ attr_list_t al = ATTRS ATTRS_LIST; const char *kids[] = { __VA_ARGS__ }; make_tag("iframe", al.a, al.n, kids, PP_NARG(__VA_ARGS__)); })
+#define Template(...) ({ const char *kids[] = { __VA_ARGS__ }; make_tag("template", NULL, 0, kids, PP_NARG(__VA_ARGS__)); })
+#define TemplateAttr(ATTRS_LIST, ...) ({ attr_list_t al = ATTRS ATTRS_LIST; const char *kids[] = { __VA_ARGS__ }; make_tag("template", al.a, al.n, kids, PP_NARG(__VA_ARGS__)); })
 /* Void tags (self-closing) */
 #define Area() make_void_tag("area", NULL, 0)
 #define AreaAttr(ATTRS_LIST) ({ attr_list_t al = ATTRS ATTRS_LIST; make_void_tag("area", al.a, al.n); })
@@ -386,8 +390,5 @@ make_void_tag(const char *tag,
 #define TrackAttr(ATTRS_LIST) ({ attr_list_t al = ATTRS ATTRS_LIST; make_void_tag("track", al.a, al.n); })
 #define Wbr() make_void_tag("wbr", NULL, 0)
 #define WbrAttr(ATTRS_LIST) ({ attr_list_t al = ATTRS ATTRS_LIST; make_void_tag("wbr", al.a, al.n); })
-#define Iframe() make_void_tag("iframe", NULL, 0)
-#define IframeAttr(ATTRS_LIST) ({ attr_list_t al = ATTRS ATTRS_LIST; make_void_tag("iframe", al.a, al.n); })
-#define Template() make_void_tag("template", NULL, 0)
-#define TemplateAttr(ATTRS_LIST) ({ attr_list_t al = ATTRS ATTRS_LIST; make_void_tag("template", al.a, al.n); })
+
 #endif // HTMB_H
