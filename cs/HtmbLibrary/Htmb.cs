@@ -1,5 +1,7 @@
 ﻿namespace HtmbLibrary;
 
+public record Attribute(string Key, string? Value);
+
 public static class Htmb
 {
     public static string A() => Tag("a");
@@ -12,6 +14,7 @@ public static class Htmb
     public static string A((string key, bool? value) attribute, params string[] contents) => Tag("a", [attribute], contents);
     public static string A(List<(string key, bool? value)> attributes) => Tag("a", attributes);
     public static string A(List<(string key, bool? value)> attributes, params string[] contents) => Tag("a", attributes, contents);
+    public static string A(Attribute attribute, params string[] contents) => Tag("a", attributes, contents);
 
     public static string Abbr() => Tag("abbr");
     public static string Abbr(params string[] contents) => Tag("abbr", contents);
