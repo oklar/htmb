@@ -2,6 +2,13 @@
 
 A minimalistic C library for building HTML structures using pure functions.
 
+For embedded via PlatformIO Project Configuration File you may include it i.e:
+[env:esp12e]
+...
+lib_deps =
+    https://github.com/oklar/htmb.git
+...
+
 ```c
 #include "htmb.b"
 
