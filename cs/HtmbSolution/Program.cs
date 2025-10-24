@@ -14,40 +14,24 @@ tags.AddRange(listedAsEmptyButNotReally);
 
 var sb = new StringBuilder();
 
-// Generate overloads for non-void elements
 foreach (var tag in tags)
 {
     var tagPascal = char.ToUpper(tag[0]) + tag.Substring(1);
-    // String attribute overloads
-    sb.AppendLine($"public static string {tagPascal}() => Tag(\"{tag}\");");
-    sb.AppendLine($"public static string {tagPascal}(params string[] contents) => Tag(\"{tag}\", contents);");
-    sb.AppendLine($"public static string {tagPascal}((string key, string? value) attribute) => Tag(\"{tag}\", new List<(string, string?)>{{ attribute }});");
-    sb.AppendLine($"public static string {tagPascal}((string key, string? value) attribute, params string[] contents) => Tag(\"{tag}\", new List<(string, string?)>{{ attribute }}, contents);");
-    sb.AppendLine($"public static string {tagPascal}(List<(string key, string? value)> attributes) => Tag(\"{tag}\", attributes);");
-    sb.AppendLine($"public static string {tagPascal}(List<(string key, string? value)> attributes, params string[] contents) => Tag(\"{tag}\", attributes, contents);");
 
-    // Bool? attribute overloads
-    sb.AppendLine($"public static string {tagPascal}((string key, bool? value) attribute) => Tag(\"{tag}\", new List<(string, bool?)>{{ attribute }});");
-    sb.AppendLine($"public static string {tagPascal}((string key, bool? value) attribute, params string[] contents) => Tag(\"{tag}\", new List<(string, bool?)>{{ attribute }}, contents);");
-    sb.AppendLine($"public static string {tagPascal}(List<(string key, bool? value)> attributes) => Tag(\"{tag}\", attributes);");
-    sb.AppendLine($"public static string {tagPascal}(List<(string key, bool? value)> attributes, params string[] contents) => Tag(\"{tag}\", attributes, contents);");
+    sb.AppendLine($"public static string {tagPascal}() => Tag(\"{tag}\");");
+    sb.AppendLine($"public static string {tagPascal}(params string[] content) => Tag(\"{tag}\", content);");
+    sb.AppendLine($"public static string {tagPascal}Attr(string attrs) => Tag(\"{tag}\", attrs);");
+    sb.AppendLine($"public static string {tagPascal}Attr(string attrs, params string[] content) => Tag(\"{tag}\", attrs, content);");
     sb.AppendLine();
 }
 
-sb.AppendLine();
 sb.AppendLine("// Void elements (TagSingle)");
-// Generate overloads for void elements
 foreach (var tag in tagsVoid)
 {
     var tagPascal = char.ToUpper(tag[0]) + tag.Substring(1);
-    // String attribute overloads
-    sb.AppendLine($"public static string {tagPascal}() => TagSingle(\"{tag}\");");
-    sb.AppendLine($"public static string {tagPascal}((string key, string? value) attribute) => TagSingle(\"{tag}\", new List<(string, string?)>{{ attribute }});");
-    sb.AppendLine($"public static string {tagPascal}(List<(string key, string? value)> attributes) => TagSingle(\"{tag}\", attributes);");
 
-    // Bool? attribute overloads
-    sb.AppendLine($"public static string {tagPascal}((string key, bool? value) attribute) => TagSingle(\"{tag}\", new List<(string, bool?)>{{ attribute }});");
-    sb.AppendLine($"public static string {tagPascal}(List<(string key, bool? value)> attributes) => TagSingle(\"{tag}\", attributes);");
+    sb.AppendLine($"public static string {tagPascal}() => TagSingle(\"{tag}\");");
+    sb.AppendLine($"public static string {tagPascal}Attr(string attrs) => TagSingle(\"{tag}\", attrs);");
     sb.AppendLine();
 }
 
