@@ -10,6 +10,7 @@
     <RepositoryUrl>https://github.com/oklar/htmb</RepositoryUrl>
     <PackageTags>HTMB Hypertext Markup Builder HTML</PackageTags>
     <PackageProjectUrl>https://github.com/oklar/htmb</PackageProjectUrl>
+    <Version>2.0.0</Version>
   </PropertyGroup>
 
 </Project>
