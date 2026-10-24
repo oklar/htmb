@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  c:
+    name: C (${{ matrix.cc }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cc: [gcc, clang]
+    env:
+      CFLAGS: -std=gnu11 -Wall -Wextra -Werror -I c/include
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test
+        run: |
+          ${{ matrix.cc }} $CFLAGS c/tests/test_htmb.c -o test_htmb
+          ./test_htmb
+      - name: Example
+        run: |
+          ${{ matrix.cc }} $CFLAGS c/examples/main.c -o example
+          ./example
+
+  csharp:
+    name: C#
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Test
+        run: dotnet test cs/HtmbSolution/HtmbSolution.sln
+
+  js:
+    name: JavaScript
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: js/package
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Test
+        run: npm test
