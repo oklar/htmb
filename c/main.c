@@ -36,9 +36,10 @@ int main(void)
     );
     
 
-    puts(test); free(test);
-    puts(emptyDiv); free(emptyDiv);
-    puts(emptyDiv2); free(emptyDiv2);
-    puts(emptyDiv3); free(emptyDiv3);
+    puts(test);
+    puts(emptyDiv);
+    puts(emptyDiv2);
+    puts(emptyDiv3);
+    htmb_reset();
     return 0;
 }

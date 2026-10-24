@@ -29,6 +29,7 @@ int main(void)
       )
     );
 
-  puts(html);
-  free(html);
+  if (html)
+    puts(html);
+  htmb_reset(); /* frees every string built above */
 }

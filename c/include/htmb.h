@@ -18,97 +18,45 @@
 typedef struct { const char **a; size_t n; } attr_list_t;
 #define ATTRS(...)  ((attr_list_t){ (const char*[]){ __VA_ARGS__ }, PP_NARG(__VA_ARGS__) })
 
-static char *
-make_tag(const char *tag,
-         const char **attrs, size_t attr_count,
-         const char **kids,  size_t kid_count)
+/*— arena: every string built lives here until htmb_reset() —*/
+#ifndef HTMB_ARENA_SIZE
+#define HTMB_ARENA_SIZE 4096
+#endif
+
+static char   htmb_arena[HTMB_ARENA_SIZE];
+static size_t htmb_arena_used;
+static int    htmb_arena_full;
+
+/* Releases every string built since the last reset. */
+static inline void htmb_reset(void)
 {
-    /*— build attrs (auto-quoting, now stripping single-quotes if present) —*/
-    size_t alen = 0;
-    for (size_t i = 0; i < attr_count; i++) {
-        const char *s = attrs[i];
-        const char *eq = strchr(s, '=');
-        if (eq) {
-            /* name + = + "" + value */
-            const char *val = eq + 1;
-            size_t vlen = strlen(val);
-            if (vlen >= 2 && val[0] == '\'' && val[vlen-1] == '\'') {
-                vlen -= 2;  /* strip outer single-quotes */
-            }
-            alen += (eq - s)   /* name */
-                  + 3          /* ="" */
-                  + vlen;      /* stripped value */
-        } else {
-            alen += strlen(s);
-        }
-        if (i+1 < attr_count) alen += 1;  /* space */
-    }
+    htmb_arena_used = 0;
+    htmb_arena_full = 0;
+}
 
-    char *abuf = (char *)malloc(alen + 1);
-    abuf[0] = '\0';
-    for (size_t i = 0; i < attr_count; i++) {
-        const char *s = attrs[i];
-        const char *eq = strchr(s, '=');
-        if (eq) {
-            /* name */
-            strncat(abuf, s, eq - s);
-            strcat(abuf, "=\"");
-
-            /* value, unwrapping single-quotes if present */
-            const char *val = eq + 1;
-            size_t vlen = strlen(val);
-            if (vlen >= 2 && val[0] == '\'' && val[vlen-1] == '\'') {
-                strncat(abuf, val + 1, vlen - 2);
-            } else {
-                strcat(abuf, val);
-            }
-
-            strcat(abuf, "\"");
-        } else {
-            strcat(abuf, s);
-        }
-        if (i+1 < attr_count) strcat(abuf, " ");
-    }
-
-    /*— rest is unchanged: build <tag…>, content, </tag> —*/
-    size_t tlen = strlen(tag);
-    char *open;
-    if (alen > 0) {
-        open = (char *)malloc(2 + tlen + 1 + alen + 1);
-        sprintf(open, "<%s %s>", tag, abuf);
-    } else {
-        open = (char *)malloc(2 + tlen + 1);
-        sprintf(open, "<%s>", tag);
-    }
-    free(abuf);
-
-    size_t clen = 0;
-    for (size_t i = 0; i < kid_count; i++)
-        if (kids[i]) clen += strlen(kids[i]);
-    char *content = (char *)malloc(clen + 1);
-    content[0] = '\0';
-    for (size_t i = 0; i < kid_count; i++)
-        if (kids[i]) strcat(content, kids[i]);
-
-    char *close = (char *)malloc(3 + tlen + 1);
-    sprintf(close, "</%s>", tag);
-
-    char *out = (char *)malloc(strlen(open) + strlen(content) + strlen(close) + 1);
-    strcpy(out, open);
-    strcat(out, content);
-    strcat(out, close);
-
-    free(open);
-    free(content);
-    free(close);
-    return out;
+/* Bytes in use, for picking HTMB_ARENA_SIZE. */
+static inline size_t htmb_used(void)
+{
+    return htmb_arena_used;
 }
 
 static char *
-make_void_tag(const char *tag,
-              const char **attrs, size_t attr_count)
+htmb_alloc(size_t n)
 {
-    /*— same attr-buffer logic as in make_tag —*/
+    /* stays full until reset, so the outermost tag returns NULL too */
+    if (htmb_arena_full || n > HTMB_ARENA_SIZE - htmb_arena_used) {
+        htmb_arena_full = 1;
+        return NULL;
+    }
+    char *p = htmb_arena + htmb_arena_used;
+    htmb_arena_used += n;
+    return p;
+}
+
+/*— attrs: name=value becomes name="value", outer single-quotes stripped —*/
+static size_t
+attrs_len(const char **attrs, size_t attr_count)
+{
     size_t alen = 0;
     for (size_t i = 0; i < attr_count; i++) {
         const char *s = attrs[i];
@@ -124,43 +72,103 @@ make_void_tag(const char *tag,
         }
         if (i + 1 < attr_count) alen += 1;  /* space */
     }
+    return alen;
+}
 
-    char *abuf = (char *)malloc(alen + 1);
-    abuf[0] = '\0';
+static char *
+attrs_write(char *p, const char **attrs, size_t attr_count)
+{
     for (size_t i = 0; i < attr_count; i++) {
         const char *s = attrs[i];
         const char *eq = strchr(s, '=');
         if (eq) {
-            strncat(abuf, s, eq - s);
-            strcat(abuf, "=\"");
+            memcpy(p, s, eq - s);
+            p += eq - s;
+            *p++ = '=';
+            *p++ = '"';
+
             const char *val = eq + 1;
             size_t vlen = strlen(val);
-            if (vlen >= 2 && val[0] == '\'' && val[vlen-1] == '\'')
-                strncat(abuf, val + 1, vlen - 2);
-            else
-                strcat(abuf, val);
-            strcat(abuf, "\"");
+            if (vlen >= 2 && val[0] == '\'' && val[vlen-1] == '\'') {
+                val += 1;
+                vlen -= 2;
+            }
+            memcpy(p, val, vlen);
+            p += vlen;
+            *p++ = '"';
         } else {
-            strcat(abuf, s);
+            size_t n = strlen(s);
+            memcpy(p, s, n);
+            p += n;
         }
-        if (i + 1 < attr_count) strcat(abuf, " ");
+        if (i + 1 < attr_count) *p++ = ' ';
     }
+    return p;
+}
 
-    /*— build the self-closing tag —*/
+static char *
+make_tag(const char *tag,
+         const char **attrs, size_t attr_count,
+         const char **kids,  size_t kid_count)
+{
     size_t tlen = strlen(tag);
-    /* estimate: '<' + tag + (space+attrs?) + '/>' + NUL */
-    size_t len = 1 + tlen + (alen ? 1 + alen : 0) + 2 + 1;
-    char *out = (char *)malloc(len);
+    size_t alen = attrs_len(attrs, attr_count);
+    size_t clen = 0;
+    for (size_t i = 0; i < kid_count; i++)
+        if (kids[i]) clen += strlen(kids[i]);
 
+    /* '<' + tag + (space+attrs?) + '>' + content + "</" + tag + '>' + NUL */
+    char *out = htmb_alloc(1 + tlen + (alen ? 1 + alen : 0) + 1 + clen + 2 + tlen + 1 + 1);
+    if (!out) return NULL;
+
+    char *p = out;
+    *p++ = '<';
+    memcpy(p, tag, tlen);
+    p += tlen;
     if (alen) {
-        /* e.g. <img src="x" alt="y"/> */
-        sprintf(out, "<%s %s/>", tag, abuf);
-    } else {
-        /* e.g. <br/> */
-        sprintf(out, "<%s/>", tag);
+        *p++ = ' ';
+        p = attrs_write(p, attrs, attr_count);
+    }
+    *p++ = '>';
+
+    for (size_t i = 0; i < kid_count; i++) {
+        if (!kids[i]) continue;
+        size_t n = strlen(kids[i]);
+        memcpy(p, kids[i], n);
+        p += n;
     }
 
-    free(abuf);
+    *p++ = '<';
+    *p++ = '/';
+    memcpy(p, tag, tlen);
+    p += tlen;
+    *p++ = '>';
+    *p = '\0';
+    return out;
+}
+
+static char *
+make_void_tag(const char *tag,
+              const char **attrs, size_t attr_count)
+{
+    size_t tlen = strlen(tag);
+    size_t alen = attrs_len(attrs, attr_count);
+
+    /* '<' + tag + (space+attrs?) + "/>" + NUL, e.g. <img src="x"/> */
+    char *out = htmb_alloc(1 + tlen + (alen ? 1 + alen : 0) + 2 + 1);
+    if (!out) return NULL;
+
+    char *p = out;
+    *p++ = '<';
+    memcpy(p, tag, tlen);
+    p += tlen;
+    if (alen) {
+        *p++ = ' ';
+        p = attrs_write(p, attrs, attr_count);
+    }
+    *p++ = '/';
+    *p++ = '>';
+    *p = '\0';
     return out;
 }
 

@@ -1,6 +1,6 @@
 {
     "name": "HTMB",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "A minimalistic C library for building HTML structures using pure functions.",
     "keywords": "html, htmlbuilder, builder, c, library",
     "repository":
