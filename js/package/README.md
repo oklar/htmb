@@ -13,7 +13,7 @@ npm install htmb
 ### Node.js
 
 ```javascript
-const { div, h1, p, list } = require("htmb");
+const { div, h1, p } = require("htmb");
 
 // Basic elements
 div({ class: "container" }, h1("Hello World"), p("Welcome to HTMB"));
@@ -23,9 +23,9 @@ div({ class: "container" }, h1("Hello World"), p("Welcome to HTMB"));
 ### Browser
 
 ```html
-<script src="htmb.js"></script>
+<script src="htmb.umd.js"></script>
 <script>
-  const { div, h1, p } = __htmb;
+  const { div, h1, p } = htmb;
 
   document.body.innerHTML = div(
     { class: "container" },
@@ -68,7 +68,7 @@ All HTML elements are available as functions that accept:
 
 ## Browser Support
 
-Works in all modern browsers. When used in browser, functions are available in the `__htmb` namespace.
+Works in all modern browsers. When used in browser, functions are available on the global `htmb` object.
 
 ## Testing
 

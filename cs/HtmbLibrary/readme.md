@@ -9,7 +9,7 @@ dotnet add package htmb
 ```
 ## Usage
 ```csharp
-using static HTMB.Htmb;
+using static HtmbLibrary.Htmb;
 
 // Basic element (content only)
 var div = Div("Hello World");
