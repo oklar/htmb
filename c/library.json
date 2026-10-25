@@ -21,6 +21,9 @@
     "homepage": "https://github.com/oklar/htmb",
     "dependencies": {
     },
+    "build": {
+      "srcDir": "include"
+    },
     "frameworks": "*",
     "platforms": "*"
   }

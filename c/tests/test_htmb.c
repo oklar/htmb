@@ -53,17 +53,16 @@ page(void)
 
 int main(void)
 {
-    /*— output —*/
-    expect("text child", Div("hello"), "<div>hello</div>");
-    expect("empty text child", Div(""), "<div></div>");
-    expect("several children", Div("a", "b", "c"), "<div>abc</div>");
+    /*— shared cases: documentation/test-cases.json and every tag in html.json —*/
+#include "cases.inc"
+
+    /*— C only —*/
     expect("NULL child is skipped", Div(NULL, "after"), "<div>after</div>");
+    expect("escape of NULL is skipped", Div(htmb_escape(NULL), "after"), "<div>after</div>");
+    expect("escaped child", P(htmb_escape("1 < 2")), "<p>1 &lt; 2</p>");
     expect("nesting", Ul(Li("one"), Li(A("two"))), "<ul><li>one</li><li><a>two</a></li></ul>");
-    expect("attributes", DivAttr(("id=main", "class=card"), "x"), "<div id=\"main\" class=\"card\">x</div>");
     expect("single-quoted value", DivAttr(("class='card big'"), "x"), "<div class=\"card big\">x</div>");
-    expect("bare attribute", ButtonAttr(("disabled", "type=button"), "Go"), "<button disabled type=\"button\">Go</button>");
-    expect("void tag", Br(), "<br/>");
-    expect("void tag with attributes", ImgAttr(("src=a.png", "alt='a cat'")), "<img src=\"a.png\" alt=\"a cat\"/>");
+    expect("empty attribute list", DivAttr((""), "x"), "<div>x</div>");
     expect("README page", page(),
         "<body><header><h1>Welcome to my page</h1>"
         "<p>This is a simple demo using standard and void HTML tags.</p><hr/></header>"

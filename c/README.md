@@ -3,13 +3,17 @@
 A minimalistic C library for building HTML structures using pure functions.
 
 For embedded via PlatformIO Project Configuration File you may include it i.e:
-```md
+```ini
 [env:esp12e]
 ...
 lib_deps =
-    https://github.com/oklar/htmb.git
+    https://github.com/oklar/htmb.git#c-v2.0.0
 ...
 ```
+
+Pin a tag like `#c-v2.0.0` so a change on `main` can't change your build. `c-v1.0.0` is the older version that used `malloc` and `free()`.
+
+It's a single header that works in C and C++, including Arduino sketches, with GCC or Clang. The tag macros use `({ ... })` statement expressions, which MSVC doesn't support.
 ```c
 #include "htmb.h"
 
@@ -90,3 +94,17 @@ build_flags = -DHTMB_ARENA_SIZE=8192
 ```
 
 Each source file that includes `htmb.h` gets its own arena, and the arena isn't thread-safe.
+
+## Escaping
+
+Text goes into the HTML as is, so a string like `<script>` in a child becomes a real tag. Wrap anything that didn't come from your own code, such as form input or a query string, in `htmb_escape()`. It replaces `&`, `<`, `>`, `"` and `'` with entities:
+
+```c
+char *html = P("Hello, ", htmb_escape(name));
+```
+
+The escaped copy lives in the arena like every other string.
+
+## Changing the tags
+
+The tag macros at the bottom of `htmb.h` are generated from `documentation/html.json`. See [documentation/readme.md](../documentation/readme.md) for how to regenerate them.
