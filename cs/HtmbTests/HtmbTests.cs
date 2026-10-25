@@ -65,27 +65,27 @@ public class HtmbTests
     public void Input_ShouldReturnEmptyInput_WhenNoArgumentsProvided()
     {
         var result = Input();
-        Assert.Equal("<input>", result);
+        Assert.Equal("<input/>", result);
     }
 
     [Fact]
     public void Input_ShouldReturnInputWithSingleAttribute_WhenSingleAttributeProvided()
     {
         var result = InputAttr("type=\"text\"");
-        Assert.Equal("<input type=\"text\">", result);
+        Assert.Equal("<input type=\"text\"/>", result);
     }
 
     [Fact]
     public void Input_ShouldReturnInputWithMultipleAttributes_WhenMultipleAttributesProvided()
     {
         var result = InputAttr("type=\"text\" name=\"username\" placeholder=\"Enter your username\"");
-        Assert.Equal("<input type=\"text\" name=\"username\" placeholder=\"Enter your username\">", result);
+        Assert.Equal("<input type=\"text\" name=\"username\" placeholder=\"Enter your username\"/>", result);
     }
 
     [Fact]
     public void Input_ShouldReturnInputWithMixedAttributes_WhenAttributesProvided()
     {
         var result = InputAttr("type=\"checkbox\" checked name=\"subscribe\"");
-        Assert.Equal("<input type=\"checkbox\" checked name=\"subscribe\">", result);
+        Assert.Equal("<input type=\"checkbox\" checked name=\"subscribe\"/>", result);
     }
 }

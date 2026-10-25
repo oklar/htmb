@@ -1,16 +1,30 @@
 ﻿using System.Text;
+using System.Text.Json;
 
+// Regenerates the tag methods in Htmb.cs from documentation/html.json:
+//
+//   dotnet run --project cs/HtmbSolution -- documentation/html.json cs/HtmbLibrary/Htmb.cs
+//
+// Only the lines between the two marker comments in Htmb.cs are rewritten.
 
+const string beginMarker = "// tags below are generated";
+const string endMarker = "// end of generated tags";
 
-// https://html.spec.whatwg.org/multipage/syntax.html#void-elements
-List<string> tagsVoid = ["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"];
+if (args.Length != 2)
+{
+    Console.Error.WriteLine("usage: dotnet run --project cs/HtmbSolution -- documentation/html.json cs/HtmbLibrary/Htmb.cs");
+    return 2;
+}
+var (jsonPath, codePath) = (args[0], args[1]);
+
+using var json = JsonDocument.Parse(File.ReadAllText(jsonPath));
+List<string> Read(string key) =>
+    json.RootElement.GetProperty(key).EnumerateArray().Select(t => t.GetString()!).ToList();
 
 // https://html.spec.whatwg.org/dev/indices.html#index
-List<string> tags = ["a", "abbr", "address", "article", "aside", "audio", "b", "bdi", "bdo", "blockquote", "body", "button", "canvas", "caption", "cite", "code", "colgroup", "data", "datalist", "dd", "del", "details", "dfn", "dialog", "div", "dl", "dt", "em", "fieldset", "figcaption", "figure", "footer", "form", "h1", "head", "header", "hgroup", "html", "i", "ins", "kbd", "label", "legend", "li", "main", "map", "mark", "menu", "meter", "nav", "noscript", "object", "ol", "optgroup", "option", "output", "p", "picture", "pre", "progress", "q", "rp", "rt", "ruby", "s", "samp", "script", "search", "section", "select", "slot", "small", "span", "strong", "style", "sub", "summary", "sup", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "time", "title", "tr", "u", "ul", "var", "video",
-    "h2", "h3", "h4", "h5", "h6"];
-List<string> listedAsEmptyButNotReally = ["iframe", "template"];
-// For tags that are listed as empty but can have children.
-tags.AddRange(listedAsEmptyButNotReally);
+var tags = Read("tags");
+// https://html.spec.whatwg.org/multipage/syntax.html#void-elements
+var tagsVoid = Read("tagsVoid");
 
 var sb = new StringBuilder();
 
@@ -18,21 +32,36 @@ foreach (var tag in tags)
 {
     var tagPascal = char.ToUpper(tag[0]) + tag.Substring(1);
 
-    sb.AppendLine($"public static string {tagPascal}() => Tag(\"{tag}\");");
-    sb.AppendLine($"public static string {tagPascal}(params string[] content) => Tag(\"{tag}\", content);");
-    sb.AppendLine($"public static string {tagPascal}Attr(string attrs) => Tag(\"{tag}\", attrs);");
-    sb.AppendLine($"public static string {tagPascal}Attr(string attrs, params string[] content) => Tag(\"{tag}\", attrs, content);");
-    sb.AppendLine();
+    sb.Append($"    public static string {tagPascal}() => Tag(\"{tag}\");\n");
+    sb.Append($"    public static string {tagPascal}(params string[] content) => Tag(\"{tag}\", content);\n");
+    sb.Append($"    public static string {tagPascal}Attr(string attrs) => Tag(\"{tag}\", attrs);\n");
+    sb.Append($"    public static string {tagPascal}Attr(string attrs, params string[] content) => Tag(\"{tag}\", attrs, content);\n");
+    sb.Append('\n');
 }
 
-sb.AppendLine("// Void elements (TagSingle)");
+sb.Append("    // Void elements (TagSingle)\n");
 foreach (var tag in tagsVoid)
 {
     var tagPascal = char.ToUpper(tag[0]) + tag.Substring(1);
 
-    sb.AppendLine($"public static string {tagPascal}() => TagSingle(\"{tag}\");");
-    sb.AppendLine($"public static string {tagPascal}Attr(string attrs) => TagSingle(\"{tag}\", attrs);");
-    sb.AppendLine();
+    sb.Append($"    public static string {tagPascal}() => TagSingle(\"{tag}\");\n");
+    sb.Append($"    public static string {tagPascal}Attr(string attrs) => TagSingle(\"{tag}\", attrs);\n");
+    sb.Append('\n');
 }
 
-Console.WriteLine(sb);
+var code = File.ReadAllText(codePath);
+int begin = code.IndexOf(beginMarker);
+int end = code.IndexOf(endMarker);
+if (begin < 0 || end < begin)
+{
+    Console.Error.WriteLine($"{codePath}: missing generated-tags markers");
+    return 1;
+}
+begin = code.IndexOf('\n', begin) + 1;
+end = code.LastIndexOf('\n', end) + 1;
+
+// keep the file's own line endings
+var generated = code.Contains("\r\n") ? sb.ToString().Replace("\n", "\r\n") : sb.ToString();
+File.WriteAllText(codePath, code[..begin] + generated + code[end..], new UTF8Encoding(true));
+Console.WriteLine($"{codePath}: {tags.Count} tags, {tagsVoid.Count} void tags");
+return 0;

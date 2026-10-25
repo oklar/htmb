@@ -24,4 +24,9 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\..\documentation\html.json" Link="html.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\documentation\test-cases.json" Link="test-cases.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>
