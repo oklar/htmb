@@ -12,18 +12,26 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cc: [gcc, clang]
+        include:
+          - cc: gcc
+            cxx: g++
+          - cc: clang
+            cxx: clang++
     env:
-      CFLAGS: -std=gnu11 -Wall -Wextra -Werror -I c/include
+      FLAGS: -Wall -Wextra -Werror -I c/include
     steps:
       - uses: actions/checkout@v7
       - name: Test
         run: |
-          ${{ matrix.cc }} $CFLAGS c/tests/test_htmb.c -o test_htmb
+          ${{ matrix.cc }} -std=gnu11 $FLAGS c/tests/test_htmb.c -o test_htmb
           ./test_htmb
+      - name: Test as C++ (Arduino sketches are C++)
+        run: |
+          ${{ matrix.cxx }} -x c++ -std=gnu++17 $FLAGS c/tests/test_htmb.c -o test_htmb_cpp
+          ./test_htmb_cpp
       - name: Example
         run: |
-          ${{ matrix.cc }} $CFLAGS c/examples/main.c -o example
+          ${{ matrix.cc }} -std=gnu11 $FLAGS c/examples/main.c -o example
           ./example
 
   csharp:
@@ -50,3 +58,24 @@ jobs:
           node-version: lts/*
       - name: Test
         run: npm test
+
+  generated:
+    name: Generated code is up to date
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+      - name: Regenerate from documentation/html.json and test-cases.json
+        run: |
+          gcc -Wall -Wextra -Werror c/generate_html.c -o generate_html
+          ./generate_html documentation/html.json c/include/htmb.h
+          dotnet run --project cs/HtmbSolution -- documentation/html.json cs/HtmbLibrary/Htmb.cs
+          node js/package/generate.js
+          node c/tests/generate_cases.js
+      - name: Fail if any generated file changed
+        run: git diff --exit-code
