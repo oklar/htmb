@@ -57,6 +57,17 @@ div({ class: "card" }, h2("Title"), p("Content"));
 // -> '<div class="card"><h2>Title</h2><p>Content</p></div>'
 ```
 
+### Escaping
+
+Children go into the HTML as is, so a string like `<script>` becomes a real tag. Attribute values only have `"` escaped. Wrap anything that didn't come from your own code, such as form input or a query string, in `escape()`. It replaces `&`, `<`, `>`, `"` and `'` with entities:
+
+```javascript
+const { p, escape } = require("htmb");
+
+p("Hello, ", escape(name));
+// name = "<b>Bob</b>" -> '<p>Hello, &lt;b&gt;Bob&lt;/b&gt;</p>'
+```
+
 ## API
 
 ### Element Functions
@@ -65,6 +76,10 @@ All HTML elements are available as functions that accept:
 
 - Optional first argument: attributes object
 - Remaining arguments: child content
+
+### escape(text)
+
+Returns `text` with `&`, `<`, `>`, `"` and `'` replaced by entities. `null` and `undefined` become an empty string.
 
 ## Browser Support
 

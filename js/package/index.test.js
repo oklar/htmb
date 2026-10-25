@@ -1,5 +1,8 @@
 const assert = require("assert");
 const htmb = require("./index.js");
+const htmbUmd = require("./htmb.umd.js");
+const { cases } = require("../../documentation/test-cases.json");
+const html = require("../../documentation/html.json");
 
 const { div, span, h1, p, img, br, input, a, style } = htmb;
 
@@ -80,6 +83,40 @@ const { div, span, h1, p, img, br, input, a, style } = htmb;
     "Style with content"
   );
   assert.strictEqual(style(), "<style></style>", "Empty style");
+
+  assert.strictEqual(htmb.escape(null), "", "Escape null");
+  assert.strictEqual(
+    p(htmb.escape("1 < 2")),
+    "<p>1 &lt; 2</p>",
+    "Escaped child"
+  );
+
+  // Shared with the C and C# tests, run against both builds
+  for (const [build, lib] of [["index.js", htmb], ["htmb.umd.js", htmbUmd]]) {
+    for (const c of cases) {
+      let got;
+      if ("escape" in c) {
+        got = lib.escape(c.escape);
+      } else {
+        const args = [...(c.children || [])];
+        if (c.attrs) {
+          args.unshift(
+            Object.fromEntries(
+              c.attrs.map(([name, value]) => [name, value === undefined ? true : value])
+            )
+          );
+        }
+        got = lib[c.tag](...args);
+      }
+      assert.strictEqual(got, c.html, `${build}: ${c.name}`);
+    }
+    for (const tag of html.tags) {
+      assert.strictEqual(lib[tag](), `<${tag}></${tag}>`, `${build}: tag ${tag}`);
+    }
+    for (const tag of html.tagsVoid) {
+      assert.strictEqual(lib[tag](), `<${tag}/>`, `${build}: tag ${tag}`);
+    }
+  }
 
   console.log("All tests passed!");
 })();
