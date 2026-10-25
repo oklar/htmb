@@ -12,6 +12,8 @@ HTMB is available in multiple languages:
 - [JavaScript](js/)
 - [...?](https://github.com/oklar/htmb/pulls)
 
+All of them share one tag list and one set of test cases, in [documentation](documentation/).
+
 ## Core Concept
 
 HTMB uses a functional approach to HTML generation, representing elements as function calls:

@@ -1,0 +1,47 @@
+{
+  "about": "Shared by the C, C# and JavaScript tests. Each case builds one tag (or escapes text) and says the exact HTML every implementation must return. An attribute is [name, value], or [name] for a bare one like disabled. The tests also check every tag in html.json on its own.",
+  "cases": [
+    { "name": "text child", "tag": "div", "children": ["hello"], "html": "<div>hello</div>" },
+    { "name": "no children", "tag": "div", "html": "<div></div>" },
+    { "name": "empty text child", "tag": "p", "children": [""], "html": "<p></p>" },
+    { "name": "several children", "tag": "div", "children": ["a", "b", "c"], "html": "<div>abc</div>" },
+    { "name": "child markup is inserted as is", "tag": "div", "children": ["<b>x</b>"], "html": "<div><b>x</b></div>" },
+    {
+      "name": "21 children",
+      "tag": "tr",
+      "children": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"],
+      "html": "<tr>123456789101112131415161718192021</tr>"
+    },
+    {
+      "name": "attributes",
+      "tag": "div",
+      "attrs": [["id", "main"], ["class", "card"]],
+      "children": ["x"],
+      "html": "<div id=\"main\" class=\"card\">x</div>"
+    },
+    { "name": "attribute with spaces", "tag": "div", "attrs": [["class", "card big"]], "children": ["x"], "html": "<div class=\"card big\">x</div>" },
+    {
+      "name": "bare attribute",
+      "tag": "button",
+      "attrs": [["disabled"], ["type", "button"]],
+      "children": ["Go"],
+      "html": "<button disabled type=\"button\">Go</button>"
+    },
+    { "name": "attributes, no children", "tag": "a", "attrs": [["href", "https://example.com"]], "html": "<a href=\"https://example.com\"></a>" },
+    { "name": "void tag", "tag": "br", "html": "<br/>" },
+    {
+      "name": "void tag with attributes",
+      "tag": "img",
+      "attrs": [["src", "a.png"], ["alt", "a cat"]],
+      "html": "<img src=\"a.png\" alt=\"a cat\"/>"
+    },
+    { "name": "void tag with a bare attribute", "tag": "input", "attrs": [["checked"]], "html": "<input checked/>" },
+    {
+      "name": "escape",
+      "escape": "<a href=\"x\">Tom & Jerry's</a>",
+      "html": "&lt;a href=&quot;x&quot;&gt;Tom &amp; Jerry&#39;s&lt;/a&gt;"
+    },
+    { "name": "escape leaves plain text alone", "escape": "hello world", "html": "hello world" },
+    { "name": "escape empty text", "escape": "", "html": "" }
+  ]
+}

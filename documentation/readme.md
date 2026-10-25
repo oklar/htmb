@@ -1,133 +1,38 @@
-# HTML Tag Reference
+# Shared tag list and test cases
 
-This document provides lists of HTML tags, including void elements and standard elements, based on the [HTML specification](https://html.spec.whatwg.org/multipage/syntax.html).
+The files here are used by every implementation, so they all provide the same tags and return the same HTML.
 
-## Void Elements
+## html.json
 
-[Spec Reference](https://html.spec.whatwg.org/multipage/syntax.html#void-elements)
+The HTML tags each implementation provides, taken from the [HTML specification](https://html.spec.whatwg.org/multipage/syntax.html):
 
-```json
-[
-  "area",
-  "base",
-  "br",
-  "col",
-  "embed",
-  "hr",
-  "img",
-  "input",
-  "link",
-  "meta",
-  "source",
-  "track",
-  "wbr"
-]
+- `tagsVoid`: [void elements](https://html.spec.whatwg.org/multipage/syntax.html#void-elements), which close themselves, like `<br/>`.
+- `tags`: [every other element](https://html.spec.whatwg.org/dev/indices.html#index).
+
+The tag functions in each library are generated from this file. To add or remove a tag, edit `html.json`, then run these from the repo root:
+
+```bash
+gcc c/generate_html.c -o generate_html
 ```
 
-## Standard Elements
-
-[Spec Reference](https://html.spec.whatwg.org/dev/indices.html#index)
-
-```json
-[
-  "a",
-  "abbr",
-  "address",
-  "article",
-  "aside",
-  "audio",
-  "b",
-  "bdi",
-  "bdo",
-  "blockquote",
-  "body",
-  "button",
-  "canvas",
-  "caption",
-  "cite",
-  "code",
-  "colgroup",
-  "data",
-  "datalist",
-  "dd",
-  "del",
-  "details",
-  "dfn",
-  "dialog",
-  "div",
-  "dl",
-  "dt",
-  "em",
-  "fieldset",
-  "figcaption",
-  "figure",
-  "footer",
-  "form",
-  "h1",
-  "head",
-  "header",
-  "hgroup",
-  "html",
-  "i",
-  "ins",
-  "kbd",
-  "label",
-  "legend",
-  "li",
-  "main",
-  "map",
-  "mark",
-  "menu",
-  "meter",
-  "nav",
-  "noscript",
-  "object",
-  "ol",
-  "optgroup",
-  "option",
-  "output",
-  "p",
-  "picture",
-  "pre",
-  "progress",
-  "q",
-  "rp",
-  "rt",
-  "ruby",
-  "s",
-  "samp",
-  "script",
-  "search",
-  "section",
-  "select",
-  "slot",
-  "small",
-  "span",
-  "strong",
-  "style",
-  "sub",
-  "summary",
-  "sup",
-  "table",
-  "tbody",
-  "td",
-  "textarea",
-  "tfoot",
-  "th",
-  "thead",
-  "time",
-  "title",
-  "tr",
-  "u",
-  "ul",
-  "var",
-  "video",
-  "h2",
-  "h3",
-  "h4",
-  "h5",
-  "h6",
-  "iframe",
-  "template"
-]
+```bash
+./generate_html documentation/html.json c/include/htmb.h
 ```
+
+```bash
+dotnet run --project cs/HtmbSolution -- documentation/html.json cs/HtmbLibrary/Htmb.cs
+```
+
+```bash
+node js/package/generate.js
+```
+
+```bash
+node c/tests/generate_cases.js
+```
+
+Each generator only rewrites the lines between its two marker comments. `generate.js` also rebuilds `htmb.umd.js` from `index.js`, so run it after any change to `index.js` as well. CI fails if a generated file is out of date.
+
+## test-cases.json
+
+Cases that every implementation must pass with exactly the same HTML. The C, C# and JavaScript tests each run them, and also check every tag in `html.json` on its own. After editing this file, run `node c/tests/generate_cases.js` to rebuild the C version of the cases.
