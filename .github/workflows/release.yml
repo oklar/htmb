@@ -1,0 +1,79 @@
+name: Release
+
+# Publishes a package when its release tag is pushed:
+#   js-v1.2.3  ->  npm   (js/package)
+#   cs-v1.2.3  ->  NuGet (cs/HtmbLibrary)
+# The tag must point at a commit on main and match the version in the package's
+# own file. Both registries use trusted publishing, so no API keys are stored here;
+# see "Releasing" in the readme for the one-time setup on npmjs.com and nuget.org.
+
+on:
+  push:
+    tags: ["js-v*", "cs-v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  npm:
+    name: Publish to npm
+    if: startsWith(github.ref_name, 'js-v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Check the tag is on main and matches package.json
+        run: |
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main || { echo "$GITHUB_REF_NAME isn't on main"; exit 1; }
+          version=$(node -p 'require("./js/package/package.json").version')
+          [ "$GITHUB_REF_NAME" = "js-v$version" ] || { echo "$GITHUB_REF_NAME doesn't match package.json version $version"; exit 1; }
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      # trusted publishing needs npm 11.5.1 or later
+      - run: npm install -g npm@11
+      - name: Test
+        working-directory: js/package
+        run: npm test
+      - name: Publish
+        working-directory: js/package
+        run: npm publish
+
+  nuget:
+    name: Publish to NuGet
+    if: startsWith(github.ref_name, 'cs-v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Check the tag is on main and matches HtmbLibrary.csproj
+        run: |
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main || { echo "$GITHUB_REF_NAME isn't on main"; exit 1; }
+          version=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' cs/HtmbLibrary/HtmbLibrary.csproj)
+          [ "$GITHUB_REF_NAME" = "cs-v$version" ] || { echo "$GITHUB_REF_NAME doesn't match HtmbLibrary.csproj version $version"; exit 1; }
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+      - name: Test
+        run: dotnet test cs/HtmbSolution/HtmbSolution.sln
+      # the project packs on every build; doing that inside dotnet pack can fail with NU5026
+      - name: Pack
+        run: dotnet pack cs/HtmbLibrary/HtmbLibrary.csproj -c Release -o artifacts -p:GeneratePackageOnBuild=false
+      # the short-lived key lasts an hour, so get it right before pushing
+      - name: NuGet login
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: oklar
+      - name: Publish
+        run: dotnet nuget push artifacts/*.nupkg --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json
