@@ -1,0 +1,41 @@
+name: PlatformIO
+
+# Builds c/examples/platformio for an ESP-12E with the real ESP8266 Arduino toolchain.
+# HTMB is installed from this checkout through lib_deps, which goes through the same
+# steps as installing it from the git URL: PlatformIO finds c/library.json and should
+# use only c/include, compiling none of the .c files next to it.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  esp8266:
+    name: ESP8266 (esp12e, Arduino)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: c/examples/platformio
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+      - name: Install PlatformIO
+        run: pip install platformio
+      - name: Use this checkout instead of the release tag
+        run: |
+          sed -i "s|https://github.com/oklar/htmb.git#.*|file://$GITHUB_WORKSPACE|" platformio.ini
+          grep -A1 "lib_deps" platformio.ini
+      - name: Build
+        run: pio run
+      - name: Check PlatformIO compiled none of HTMB's .c files
+        run: |
+          objs=$(find .pio/build -path '*HTMB*' -name '*.o')
+          if [ -n "$objs" ]; then
+            echo "PlatformIO compiled these from the HTMB library:"
+            echo "$objs"
+            exit 1
+          fi

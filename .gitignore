@@ -80,6 +80,9 @@ cs/*/.vs/*
 # VSCode settings
 .vscode/
 
+# PlatformIO build output
+.pio/
+
 # Temporary files
 *~
 *.log

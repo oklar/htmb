@@ -11,7 +11,7 @@ lib_deps =
 ...
 ```
 
-Pin a tag like `#c-v2.0.0` so a change on `main` can't change your build. `c-v1.0.0` is the older version that used `malloc` and `free()`.
+Pin a tag like `#c-v2.0.0` so a change on `main` can't change your build. `c-v1.0.0` is the older version that used `malloc` and `free()`. [examples/platformio](examples/platformio) is a complete ESP-12E project, and CI builds it with the real ESP8266 toolchain.
 
 It's a single header that works in C and C++, including Arduino sketches, with GCC or Clang. The tag macros use `({ ... })` statement expressions, which MSVC doesn't support.
 ```c
