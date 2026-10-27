@@ -3,13 +3,15 @@ name: Release
 # Publishes a package when its release tag is pushed:
 #   js-v1.2.3  ->  npm   (js/package)
 #   cs-v1.2.3  ->  NuGet (cs/HtmbLibrary)
-# The tag must point at a commit on main and match the version in the package's
+#   c-v1.2.3   ->  nothing to upload; PlatformIO installs from the tag
+# Every tag then gets a GitHub release, with the tag's message as its notes.
+# The tag must point at a commit on main and match the version in the library's
 # own file. Both registries use trusted publishing, so no API keys are stored here;
 # see "Releasing" in the readme for the one-time setup on npmjs.com and nuget.org.
 
 on:
   push:
-    tags: ["js-v*", "cs-v*"]
+    tags: ["js-v*", "cs-v*", "c-v*"]
 
 permissions:
   contents: read
@@ -77,3 +79,34 @@ jobs:
           user: oklar
       - name: Publish
         run: dotnet nuget push artifacts/*.nupkg --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json
+
+  github:
+    name: GitHub release
+    needs: [npm, nuget]
+    # runs after whichever publish job applies; a c-v* tag skips both, so only a failure stops it
+    if: ${{ !cancelled() && !contains(needs.*.result, 'failure') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Check the tag is on main, and a c-v* tag matches library.json
+        run: |
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main || { echo "$GITHUB_REF_NAME isn't on main"; exit 1; }
+          case "$GITHUB_REF_NAME" in
+            c-v*)
+              version=$(node -p 'require("./c/library.json").version')
+              [ "$GITHUB_REF_NAME" = "c-v$version" ] || { echo "$GITHUB_REF_NAME doesn't match library.json version $version"; exit 1; }
+              ;;
+          esac
+      - name: Create the release from the tag's message
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # fetch the tag itself, so its message is there even if checkout stored it without one
+          git fetch --force origin "refs/tags/$GITHUB_REF_NAME:refs/tags/$GITHUB_REF_NAME"
+          title=$(git tag -l --format='%(contents:subject)' "$GITHUB_REF_NAME")
+          git tag -l --format='%(contents:body)' "$GITHUB_REF_NAME" > notes.md
+          gh release create "$GITHUB_REF_NAME" --verify-tag --title "$title" --notes-file notes.md

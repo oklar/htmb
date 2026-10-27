@@ -42,18 +42,20 @@ Each library is released on its own by pushing a tag. Bump the version in the li
 | Library | Version lives in | Tag | Publishes to |
 | --- | --- | --- | --- |
 | C | `c/library.json` | `c-v2.0.0` | Nothing to upload: PlatformIO users pin the tag in `lib_deps` |
-| C# | `cs/HtmbLibrary/HtmbLibrary.csproj` | `cs-v2.1.0` | [NuGet](https://www.nuget.org/packages/htmb) |
+| C# | `cs/HtmbLibrary/HtmbLibrary.csproj` | `cs-v2.2.0` | [NuGet](https://www.nuget.org/packages/htmb) |
 | JavaScript | `js/package/package.json` | `js-v1.2.0` | [npm](https://www.npmjs.com/package/htmb) |
 
+The tag's message becomes the [GitHub release](https://github.com/oklar/htmb/releases): its first line is the title and the rest is the notes.
+
 ```bash
-git tag -a js-v1.2.0 -m "htmb 1.2.0 for JavaScript"
+git tag -a js-v1.3.0 -m "htmb 1.3.0 for JavaScript" -m "- What changed, one line each"
 ```
 
 ```bash
-git push origin js-v1.2.0
+git push origin js-v1.3.0
 ```
 
-For `cs-v*` and `js-v*` tags, the [release workflow](.github/workflows/release.yml) checks that the tag is on `main` and matches the version, runs the tests, then publishes. It uses trusted publishing, so the repo holds no API keys. That needs a one-time setup on each registry:
+The [release workflow](.github/workflows/release.yml) checks that the tag is on `main` and matches the version. For `cs-v*` and `js-v*` tags it then runs the tests and publishes the package, and for every tag it creates the GitHub release. Publishing uses trusted publishing, so the repo holds no API keys. That needs a one-time setup on each registry:
 
 - **npm:** on npmjs.com, open the `htmb` package's settings, add a trusted publisher for GitHub Actions with user `oklar`, repository `htmb` and workflow file `release.yml`, and tick **npm publish** under allowed actions. (Without it, npm only allows staged publishes, which wait for you to approve them.)
 - **NuGet:** on nuget.org, open **Trusted Publishing** from your username menu and add a policy with repository owner `oklar`, repository `htmb` and workflow file `release.yml`.
