@@ -9,7 +9,7 @@ HTMB is available in multiple languages:
 
 - [C](c/)
 - [C#](cs/HtmbLibrary/)
-- [JavaScript](js/)
+- [JavaScript / TypeScript](js/package/)
 - [...?](https://github.com/oklar/htmb/pulls)
 
 All of them share one tag list and one set of test cases, in [documentation](documentation/).
