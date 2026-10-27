@@ -1,5 +1,3 @@
-
-
 # Dependencies
 node_modules/
 package-lock.json
@@ -37,17 +35,13 @@ coverage/
 # Temporary files
 *.tmp
 *.temp
-.cache/ 
+*~
+.cache/
 
+# .NET build output
 cs/*/bin/*
 cs/*/obj/*
-
-cs/*/obj/*
-cs/*/bin/*
-
 cs/*/.vs/*
-
-*.exe
 
 # Compiled object files
 *.o
@@ -77,13 +71,5 @@ cs/*/.vs/*
 *.idb
 *.pdb
 
-# VSCode settings
-.vscode/
-
 # PlatformIO build output
 .pio/
-
-# Temporary files
-*~
-*.log
-*.tmp

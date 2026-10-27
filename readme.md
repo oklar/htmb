@@ -62,4 +62,4 @@ The [release workflow](.github/workflows/release.yml) checks that the tag is on 
 
 ## License
 
-MIT
+MIT, see [LICENSE](LICENSE).
