@@ -58,6 +58,10 @@ jobs:
           node-version: lts/*
       - name: Test
         run: npm test
+      - name: Check the TypeScript types
+        run: |
+          npm install --no-audit --no-fund
+          npm run test:types
 
   generated:
     name: Generated code is up to date

@@ -43,14 +43,14 @@ Each library is released on its own by pushing a tag. Bump the version in the li
 | --- | --- | --- | --- |
 | C | `c/library.json` | `c-v2.0.0` | Nothing to upload: PlatformIO users pin the tag in `lib_deps` |
 | C# | `cs/HtmbLibrary/HtmbLibrary.csproj` | `cs-v2.1.0` | [NuGet](https://www.nuget.org/packages/htmb) |
-| JavaScript | `js/package/package.json` | `js-v1.1.0` | [npm](https://www.npmjs.com/package/htmb) |
+| JavaScript | `js/package/package.json` | `js-v1.2.0` | [npm](https://www.npmjs.com/package/htmb) |
 
 ```bash
-git tag -a js-v1.1.0 -m "htmb 1.1.0 for JavaScript"
+git tag -a js-v1.2.0 -m "htmb 1.2.0 for JavaScript"
 ```
 
 ```bash
-git push origin js-v1.1.0
+git push origin js-v1.2.0
 ```
 
 For `cs-v*` and `js-v*` tags, the [release workflow](.github/workflows/release.yml) checks that the tag is on `main` and matches the version, runs the tests, then publishes. It uses trusted publishing, so the repo holds no API keys. That needs a one-time setup on each registry:

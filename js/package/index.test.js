@@ -6,8 +6,10 @@ const html = require("../../documentation/html.json");
 
 const { div, span, h1, p, img, br, input, a, style } = htmb;
 
-(function runTests() {
+(async function runTests() {
   console.log("Running HTMB tests...");
+
+  const htmbEsm = await import("./index.mjs");
 
   assert.strictEqual(div(), "<div></div>", "Empty div");
   assert.strictEqual(span(), "<span></span>", "Empty span");
@@ -91,8 +93,13 @@ const { div, span, h1, p, img, br, input, a, style } = htmb;
     "Escaped child"
   );
 
-  // Shared with the C and C# tests, run against both builds
-  for (const [build, lib] of [["index.js", htmb], ["htmb.umd.js", htmbUmd]]) {
+  // Shared with the C and C# tests, run against every build
+  const builds = [
+    ["index.js", htmb],
+    ["htmb.umd.js", htmbUmd],
+    ["index.mjs", htmbEsm.default],
+  ];
+  for (const [build, lib] of builds) {
     for (const c of cases) {
       let got;
       if ("escape" in c) {
@@ -118,5 +125,13 @@ const { div, span, h1, p, img, br, input, a, style } = htmb;
     }
   }
 
+  // index.mjs also exports each tag and escape by name
+  for (const name of [...html.tagsVoid, ...html.tags, "escape"]) {
+    assert.strictEqual(htmbEsm[name], htmbEsm.default[name], `index.mjs: export ${name}`);
+  }
+
   console.log("All tests passed!");
-})();
+})().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

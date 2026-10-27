@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "strict": true,
+    "noEmit": true
+  },
+  "files": ["types.test.mts", "types.test.cts"]
+}

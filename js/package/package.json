@@ -1,14 +1,16 @@
 {
   "name": "htmb",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "HTMB is a lightweight library for building HTML structures using functions",
   "main": "index.js",
-  "module": "index.js",
+  "module": "index.mjs",
+  "types": "index.d.ts",
   "browser": "htmb.umd.js",
   "unpkg": "htmb.umd.js",
   "jsdelivr": "htmb.umd.js",
   "exports": {
     ".": {
+      "types": "./index.d.ts",
       "require": "./index.js",
       "import": "./index.mjs"
     }
@@ -16,10 +18,15 @@
   "files": [
     "index.mjs",
     "htmb.umd.js",
-    "index.js"
+    "index.js",
+    "index.d.ts"
   ],
   "scripts": {
-    "test": "node index.test.js"
+    "test": "node index.test.js",
+    "test:types": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
   },
   "repository": {
     "type": "git",

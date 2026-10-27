@@ -31,7 +31,7 @@ node js/package/generate.js
 node c/tests/generate_cases.js
 ```
 
-Each generator only rewrites the lines between its two marker comments. `generate.js` also rebuilds `htmb.umd.js` from `index.js`, so run it after any change to `index.js` as well. CI fails if a generated file is out of date.
+Each generator only rewrites the lines between its two marker comments. `generate.js` writes the tags into both `index.js` and the TypeScript types in `index.d.ts`, and also rebuilds `htmb.umd.js` and the ES module `index.mjs` from `index.js`, so run it after any change to `index.js` as well. CI fails if a generated file is out of date.
 
 ## test-cases.json
 

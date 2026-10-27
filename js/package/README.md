@@ -20,6 +20,30 @@ div({ class: "container" }, h1("Hello World"), p("Welcome to HTMB"));
 // -> '<div class="container"><h1>Hello World</h1><p>Welcome to HTMB</p></div>'
 ```
 
+### ES modules and bundlers
+
+```javascript
+import { div, h1, p } from "htmb";
+// or: import htmb from "htmb";
+```
+
+`import` loads `index.mjs`, a plain ES module, so it works in Node and with bundlers such as Vite, webpack and esbuild, including in browser code. Each tag and `escape` is a named export. `var` is a reserved word, so rename it when you import it: `import { var as varTag } from "htmb"`.
+
+Before 1.2.0, `index.mjs` loaded the CommonJS build with Node's `createRequire`, so bundlers failed on it, and it only had a default export.
+
+### TypeScript
+
+The package comes with types, so there's nothing else to install:
+
+```typescript
+import { div, input, type Attributes } from "htmb";
+
+const checkbox: Attributes = { type: "checkbox", checked: true };
+div({ class: "row" }, input(checkbox), "Remember me");
+```
+
+Besides the tag functions and `escape`, it exports the types `Attributes`, `AttributeValue`, `Child` and `TagFunction`.
+
 ### Browser
 
 ```html
@@ -74,8 +98,10 @@ p("Hello, ", escape(name));
 
 All HTML elements are available as functions that accept:
 
-- Optional first argument: attributes object
-- Remaining arguments: child content
+- Optional first argument: attributes object. Values are strings, numbers or booleans: `true` writes a bare attribute like `disabled`, and `false`, `null` and `undefined` leave the attribute out.
+- Remaining arguments: children, as strings or numbers. `null` and `undefined` are skipped.
+
+Each function returns the HTML as a string.
 
 ### escape(text)
 
@@ -89,6 +115,16 @@ Works in all modern browsers. When used in browser, functions are available on t
 
 ```bash
 npm test
+```
+
+To check the TypeScript types too, install TypeScript first:
+
+```bash
+npm install
+```
+
+```bash
+npm run test:types
 ```
 
 ## Contributing
