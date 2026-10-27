@@ -63,7 +63,7 @@ jobs:
           [ "$GITHUB_REF_NAME" = "cs-v$version" ] || { echo "$GITHUB_REF_NAME doesn't match HtmbLibrary.csproj version $version"; exit 1; }
       - uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 10.0.x
       - name: Test
         run: dotnet test cs/HtmbSolution/HtmbSolution.sln
       # the project packs on every build; doing that inside dotnet pack can fail with NU5026

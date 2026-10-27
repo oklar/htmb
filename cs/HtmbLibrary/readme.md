@@ -7,6 +7,9 @@ A minimalistic C# library for building HTML structures using pure functions.
 ```bash
 dotnet add package htmb
 ```
+
+It's built for .NET 8 and .NET 10, and it has no dependencies.
+
 ## Usage
 ```csharp
 using static HtmbLibrary.Htmb;

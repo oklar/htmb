@@ -1,16 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>htmb</PackageId>
     <Title>HTMB - Hypertext Markup Builder</Title>
+    <Description>A minimalistic C# library for building HTML structures using pure functions, one for every HTML tag.</Description>
+    <Authors>Olav Kjartan Larseng</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/oklar/htmb</RepositoryUrl>
     <PackageTags>HTMB Hypertext Markup Builder HTML</PackageTags>
     <PackageProjectUrl>https://github.com/oklar/htmb</PackageProjectUrl>
-    <Version>2.1.0</Version>
+    <Version>2.2.0</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="readme.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
 </Project>
