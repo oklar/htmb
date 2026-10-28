@@ -41,9 +41,9 @@ Each library is released on its own by pushing a tag. Bump the version in the li
 
 | Library | Version lives in | Tag | Publishes to |
 | --- | --- | --- | --- |
-| C | `c/library.json` | `c-v2.0.0` | Nothing to upload: PlatformIO users pin the tag in `lib_deps` |
+| C | `c/library.json` | `c-v2.0.1` | Nothing to upload: PlatformIO users pin the tag in `lib_deps` |
 | C# | `cs/HtmbLibrary/HtmbLibrary.csproj` | `cs-v2.2.0` | [NuGet](https://www.nuget.org/packages/htmb) |
-| JavaScript | `js/package/package.json` | `js-v1.2.0` | [npm](https://www.npmjs.com/package/htmb) |
+| JavaScript | `js/package/package.json` | `js-v1.2.1` | [npm](https://www.npmjs.com/package/htmb) |
 
 The tag's message becomes the [GitHub release](https://github.com/oklar/htmb/releases): its first line is the title and the rest is the notes.
 
