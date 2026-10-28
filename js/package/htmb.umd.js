@@ -99,6 +99,7 @@
     "search",
     "section",
     "select",
+    "selectedcontent",
     "slot",
     "small",
     "span",

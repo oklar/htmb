@@ -353,6 +353,11 @@ public static class Htmb
     public static string SelectAttr(string attrs) => Tag("select", attrs);
     public static string SelectAttr(string attrs, params string[] content) => Tag("select", attrs, content);
 
+    public static string Selectedcontent() => Tag("selectedcontent");
+    public static string Selectedcontent(params string[] content) => Tag("selectedcontent", content);
+    public static string SelectedcontentAttr(string attrs) => Tag("selectedcontent", attrs);
+    public static string SelectedcontentAttr(string attrs, params string[] content) => Tag("selectedcontent", attrs, content);
+
     public static string Slot() => Tag("slot");
     public static string Slot(params string[] content) => Tag("slot", content);
     public static string SlotAttr(string attrs) => Tag("slot", attrs);

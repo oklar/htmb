@@ -85,6 +85,7 @@ expect("tag script", Script(), "<script></script>");
 expect("tag search", Search(), "<search></search>");
 expect("tag section", Section(), "<section></section>");
 expect("tag select", Select(), "<select></select>");
+expect("tag selectedcontent", Selectedcontent(), "<selectedcontent></selectedcontent>");
 expect("tag slot", Slot(), "<slot></slot>");
 expect("tag small", Small(), "<small></small>");
 expect("tag span", Span(), "<span></span>");
