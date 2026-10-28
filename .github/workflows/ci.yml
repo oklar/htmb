@@ -29,6 +29,12 @@ jobs:
         run: |
           ${{ matrix.cxx }} -x c++ -std=gnu++17 $FLAGS c/tests/test_htmb.c -o test_htmb_cpp
           ./test_htmb_cpp
+      - name: No warnings for files that use only some kinds of tags
+        run: |
+          for tags in "" -DNORMAL_TAGS; do
+            ${{ matrix.cc }} -std=gnu11 $FLAGS $tags -c c/tests/unused_helpers.c -o /dev/null
+            ${{ matrix.cxx }} -x c++ -std=gnu++17 $FLAGS $tags -c c/tests/unused_helpers.c -o /dev/null
+          done
       - name: Example
         run: |
           ${{ matrix.cc }} -std=gnu11 $FLAGS c/examples/main.c -o example
