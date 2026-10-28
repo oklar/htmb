@@ -11,6 +11,10 @@
 #define HTMB_UNPAREN(...) __VA_ARGS__
 #define HTMB_COUNT(a) (sizeof (a) / sizeof *(a))
 
+/*— marks the helpers the tag macros call, so a file that uses no void tag doesn't warn that
+    make_void_tag is unused. They aren't inline because clang -Os would copy them into every tag —*/
+#define HTMB_MAYBE_UNUSED __attribute__((unused))
+
 /*— arena: every string built lives here until htmb_reset() —*/
 #ifndef HTMB_ARENA_SIZE
 #define HTMB_ARENA_SIZE 4096
@@ -33,7 +37,7 @@ static inline size_t htmb_used(void)
     return htmb_arena_used;
 }
 
-static char *
+static HTMB_MAYBE_UNUSED char *
 htmb_alloc(size_t n)
 {
     /* stays full until reset, so the outermost tag returns NULL too */
@@ -90,7 +94,7 @@ htmb_escape(const char *text)
 }
 
 /*— attrs: name=value becomes name="value", outer single-quotes stripped —*/
-static size_t
+static HTMB_MAYBE_UNUSED size_t
 attrs_len(const char **attrs, size_t attr_count)
 {
     size_t alen = 0;
@@ -111,7 +115,7 @@ attrs_len(const char **attrs, size_t attr_count)
     return alen;
 }
 
-static char *
+static HTMB_MAYBE_UNUSED char *
 attrs_write(char *p, const char **attrs, size_t attr_count)
 {
     for (size_t i = 0; i < attr_count; i++) {
@@ -142,7 +146,7 @@ attrs_write(char *p, const char **attrs, size_t attr_count)
     return p;
 }
 
-static char *
+static HTMB_MAYBE_UNUSED char *
 make_tag(const char *tag,
          const char **attrs, size_t attr_count,
          const char **kids,  size_t kid_count)
@@ -183,7 +187,7 @@ make_tag(const char *tag,
     return out;
 }
 
-static char *
+static HTMB_MAYBE_UNUSED char *
 make_void_tag(const char *tag,
               const char **attrs, size_t attr_count)
 {
