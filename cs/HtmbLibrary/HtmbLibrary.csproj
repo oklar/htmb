@@ -8,7 +8,7 @@
     <PackageId>htmb</PackageId>
     <Title>HTMB - Hypertext Markup Builder</Title>
     <Description>A minimalistic C# library for building HTML structures using pure functions, one for every HTML tag.</Description>
-    <Authors>Olav Kjartan Larseng</Authors>
+    <Authors>Larsenq</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/oklar/htmb</RepositoryUrl>
