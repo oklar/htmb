@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/oklar/htmb</RepositoryUrl>
     <PackageTags>HTMB Hypertext Markup Builder HTML</PackageTags>
     <PackageProjectUrl>https://github.com/oklar/htmb</PackageProjectUrl>
-    <Version>2.2.0</Version>
+    <Version>2.3.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
