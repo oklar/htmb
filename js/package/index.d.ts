@@ -113,6 +113,7 @@ declare namespace htmb {
     search: TagFunction;
     section: TagFunction;
     select: TagFunction;
+    selectedcontent: TagFunction;
     slot: TagFunction;
     small: TagFunction;
     span: TagFunction;

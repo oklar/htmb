@@ -349,6 +349,8 @@ make_void_tag(const char *tag,
 #define SectionAttr(ATTRS_LIST, ...) ({ const char *htmb_a_[] = { NULL, HTMB_UNPAREN ATTRS_LIST }; const char *htmb_k_[] = { NULL, __VA_ARGS__ }; make_tag("section", htmb_a_ + 1, HTMB_COUNT(htmb_a_) - 1, htmb_k_ + 1, HTMB_COUNT(htmb_k_) - 1); })
 #define Select(...) ({ const char *htmb_k_[] = { NULL, __VA_ARGS__ }; make_tag("select", NULL, 0, htmb_k_ + 1, HTMB_COUNT(htmb_k_) - 1); })
 #define SelectAttr(ATTRS_LIST, ...) ({ const char *htmb_a_[] = { NULL, HTMB_UNPAREN ATTRS_LIST }; const char *htmb_k_[] = { NULL, __VA_ARGS__ }; make_tag("select", htmb_a_ + 1, HTMB_COUNT(htmb_a_) - 1, htmb_k_ + 1, HTMB_COUNT(htmb_k_) - 1); })
+#define Selectedcontent(...) ({ const char *htmb_k_[] = { NULL, __VA_ARGS__ }; make_tag("selectedcontent", NULL, 0, htmb_k_ + 1, HTMB_COUNT(htmb_k_) - 1); })
+#define SelectedcontentAttr(ATTRS_LIST, ...) ({ const char *htmb_a_[] = { NULL, HTMB_UNPAREN ATTRS_LIST }; const char *htmb_k_[] = { NULL, __VA_ARGS__ }; make_tag("selectedcontent", htmb_a_ + 1, HTMB_COUNT(htmb_a_) - 1, htmb_k_ + 1, HTMB_COUNT(htmb_k_) - 1); })
 #define Slot(...) ({ const char *htmb_k_[] = { NULL, __VA_ARGS__ }; make_tag("slot", NULL, 0, htmb_k_ + 1, HTMB_COUNT(htmb_k_) - 1); })
 #define SlotAttr(ATTRS_LIST, ...) ({ const char *htmb_a_[] = { NULL, HTMB_UNPAREN ATTRS_LIST }; const char *htmb_k_[] = { NULL, __VA_ARGS__ }; make_tag("slot", htmb_a_ + 1, HTMB_COUNT(htmb_a_) - 1, htmb_k_ + 1, HTMB_COUNT(htmb_k_) - 1); })
 #define Small(...) ({ const char *htmb_k_[] = { NULL, __VA_ARGS__ }; make_tag("small", NULL, 0, htmb_k_ + 1, HTMB_COUNT(htmb_k_) - 1); })
